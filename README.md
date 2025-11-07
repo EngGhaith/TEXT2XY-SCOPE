@@ -1,39 +1,57 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/wokwi_test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Tiny Tapeout Wokwi Project Template
+# 4-Bit ALU with TinyTapeout
 
-- [Read the documentation for project](docs/info.md)
+This project implements a small 4-bit ALU in Verilog for TinyTapout.
+It supports arithmetic and logic operations and additionally contains an internal 8x4-bit register file to store values.
 
-## What is Tiny Tapeout?
+## How it works
 
-Tiny Tapeout is an educational project that aims to make it easier and cheaper than ever to get your digital and analog designs manufactured on a real chip.
+Inputs:
+- `ui_in[3:0]` = A operand (4 bit)
+- `ui_in[7:4]` = B operand (4 bit)
+- `uio[3:0]` = opcode
 
-To learn more and get started, visit https://tinytapeout.com.
+Outputs:
+- `uo_out[3:0]` = ALU result (4 bit)
 
-## Wokwi Projects
+- `uo_out[4]` = Carry flag
 
-Edit the [info.yaml](info.yaml) and change the `wokwi_id` to the ID of your Wokwi project. You can find the ID in the URL of your project, it's the big number after `wokwi.com/projects/`.
+- `uo_out[5]` = Overflow flag
 
-The GitHub action will automatically fetch the digital netlist from Wokwi and build the ASIC files.
+- `uo_out[6]` = Sign flag
 
-## Enable GitHub actions to build the results page
+- `uo_out[7]` = Zero flag
 
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+The ALU executes operations every clock cycle and the result is latched on rising edge of `clk`.
+There are two opcode ranges:
 
-## Resources
+opcode (4 bit)		Function
+`0000-0111`			ALU core operations (ADD, SUB, AND, OR, XOR, SHIFT, PASS)
+`1xxx`				register read/write operations
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
+The internal register file consists of 8 registers à 4 bit.	
 
-## What next?
+## How to test
 
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+This ALU is easy to test with DIP switches:
+1. set A on `ui[3:0]`
+2. set B on `ui[7:4]`
+3. choose opcode on `uio[3:0]`
+4. read result and flags on `uo[7:0]`
+
+Example: ADD 3 + 5
+- A = 0011
+- B = 0101
+- opcode = 0000
+
+result -> `uo_out` = `00001000`
+
+## External hardware
+No external hardware required.
+You can however attach LEDs for output and DIP switches for input.
+Lower 4 LEDs = result. Upper 4 LEDs = flags.
+Register file can be used to store values step-by-step to build tiny assembly-like programs.
+
+## Purpose
+The goal is to demonstrate that TinyTapout can be used to build a small but fully functional CPU datapath element.
