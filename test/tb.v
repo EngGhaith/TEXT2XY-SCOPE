@@ -1,6 +1,6 @@
-// tiny_4bit_alu_tb.v
+// tb.v
 `timescale 1ns/1ps
-module tiny_4bit_alu_tb;
+module tt_um_tiny_4bit_alu_tb;
 
     reg clk;
     reg rst_n;
@@ -9,7 +9,7 @@ module tiny_4bit_alu_tb;
     wire [7:0] uo_out;
 
     // instantiate DUT
-    tiny_4bit_alu dut (
+    tt_um_tiny_4bit_alu dut (
         .clk(clk),
         .rst_n(rst_n),
         .ui_in(ui_in),
@@ -22,8 +22,8 @@ module tiny_4bit_alu_tb;
     always #10 clk = ~clk;
 
     initial begin
-        $dumpfile("tiny_4bit_alu_tb.vcd");
-        $dumpvars(0, tiny_4bit_alu_tb);
+        $dumpfile("tt_um_tiny_4bit_alu_tb.vcd");
+        $dumpvars(0, tt_um_tiny_4bit_alu_tb);
 
         // reset
         rst_n = 0;

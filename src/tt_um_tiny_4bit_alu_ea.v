@@ -1,10 +1,9 @@
-// tiny_4bit_alu_ea.v
+// tt_um_tiny_4bit_alu_ea.v
 // 4-bit ALU with 8x4-bit register file
 // Ports: clk, rst_n, ui_in[7:0] (B[7:4], A[3:0]), uio[7:0] (opcode in uio[3:0]), uo_out[7:0]
 // uo_out: [7]=ZERO, [6]=SIGN, [5]=OVERFLOW, [4]=CARRY, [3:0]=result
 
-`timescale 1ns/1ps
-module tiny_4bit_alu (
+module tt_um_tiny_4bit_alu (
     input  wire        clk,
     input  wire        rst_n,    // active low
     input  wire [7:0]  ui_in,    // {B[7:4], A[3:0]}
