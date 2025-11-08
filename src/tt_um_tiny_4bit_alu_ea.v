@@ -9,8 +9,13 @@ module tt_um_tiny_4bit_alu (
 	input  wire 	   ena,
     input  wire [7:0]  ui_in,    // {B[7:4], A[3:0]}
     input  wire [7:0]  uio_in,      // opcode in uio_in[3:0]
-    output reg  [7:0]  uo_out
+    output reg  [7:0]  uo_out,
+	output reg  [7:0]  uio_oe,
+	output reg  [7:0]  uio_out
 );
+	// unused bidirectional pads
+	assign uio_out = 8'h00;
+	assign uio_oe = 8'h00;
 
     // operands
     wire [3:0] A = ui_in[3:0];

@@ -8,6 +8,8 @@ module tt_um_tiny_4bit_alu_tb;
     reg [7:0] ui_in;
     reg [7:0] uio_in;
     wire [7:0] uo_out;
+	wire [7:0] uio_oe;
+	wire [7:0] uio_out;
 
     // instantiate DUT
     tt_um_tiny_4bit_alu dut (
@@ -16,7 +18,9 @@ module tt_um_tiny_4bit_alu_tb;
 		.ena(ena),
         .ui_in(ui_in),
         .uio_in(uio_in),
-        .uo_out(uo_out)
+        .uo_out(uo_out),
+		.uio_oe(uio_oe),
+		.uio_out(uio_out)
     );
 
     // clock generation (50 MHz -> 20 ns period)
