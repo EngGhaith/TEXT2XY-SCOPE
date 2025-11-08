@@ -4,6 +4,7 @@ module tt_um_tiny_4bit_alu_tb;
 
     reg clk;
     reg rst_n;
+	reg ena;
     reg [7:0] ui_in;
     reg [7:0] uio;
     wire [7:0] uo_out;
@@ -12,6 +13,7 @@ module tt_um_tiny_4bit_alu_tb;
     tt_um_tiny_4bit_alu dut (
         .clk(clk),
         .rst_n(rst_n),
+		.ena(ena),
         .ui_in(ui_in),
         .uio(uio),
         .uo_out(uo_out)
@@ -27,6 +29,7 @@ module tt_um_tiny_4bit_alu_tb;
 
         // reset
         rst_n = 0;
+		ena = 1;
         ui_in = 8'h00;
         uio   = 8'h00;
         #100;

@@ -1,5 +1,5 @@
 {
-	"DESIGN_NAME": "tiny_4bit_alu",
+	"DESIGN_NAME": "tt_um_tiny_4bit_alu",
 	"VERILOG_FILES": "tt_um_tiny_4bit_alu_ea.v",
 	"DIE_AREA": "0 0 160 100",
 	"PNR_SDC_FILE": "impl.sdc",

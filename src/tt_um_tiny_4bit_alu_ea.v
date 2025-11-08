@@ -6,6 +6,7 @@
 module tt_um_tiny_4bit_alu (
     input  wire        clk,
     input  wire        rst_n,    // active low
+	input  wire 	   ena,
     input  wire [7:0]  ui_in,    // {B[7:4], A[3:0]}
     input  wire [7:0]  uio,      // opcode in uio[3:0]
     output reg  [7:0]  uo_out
@@ -176,7 +177,8 @@ module tt_um_tiny_4bit_alu (
             end
 
             // drive output
-            uo_out <= {flag_zero, flag_sign, flag_overflow, flag_carry, result_reg};
+            uo_out <= ena ? {flag_zero, flag_sign, flag_overflow, flag_carry, result_reg}
+					: 8'b0;
         end
     end
 
