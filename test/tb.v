@@ -6,7 +6,7 @@ module tt_um_tiny_4bit_alu_tb;
     reg rst_n;
 	reg ena;
     reg [7:0] ui_in;
-    reg [7:0] uio;
+    reg [7:0] uio_in;
     wire [7:0] uo_out;
 
     // instantiate DUT
@@ -15,7 +15,7 @@ module tt_um_tiny_4bit_alu_tb;
         .rst_n(rst_n),
 		.ena(ena),
         .ui_in(ui_in),
-        .uio(uio),
+        .uio_in(uio_in),
         .uo_out(uo_out)
     );
 
@@ -31,7 +31,7 @@ module tt_um_tiny_4bit_alu_tb;
         rst_n = 0;
 		ena = 1;
         ui_in = 8'h00;
-        uio   = 8'h00;
+        uio_in   = 8'h00;
         #100;
         rst_n = 1;
         #100;
@@ -39,13 +39,13 @@ module tt_um_tiny_4bit_alu_tb;
         // 1) REG_WRITE: write value 7 into reg[3]
         // ui_in = {B, A} = {3, 7}
         ui_in = {4'd3, 4'd7};
-        uio[3:0] = 4'b1000; // REG_WRITE
+        uio_in[3:0] = 4'b1000; // REG_WRITE
         #40; // wait two clock edges (20ns each) so write commits on rising edge
         #40;
 
         // 2) REG_READ: read reg[3]
         ui_in = {4'd3, 4'd0};
-        uio[3:0] = 4'b1001; // REG_READ
+        uio_in[3:0] = 4'b1001; // REG_READ
         #40; #40;
         if (uo_out[3:0] !== 4'd7) begin
             $display("ERROR: REG_READ expected 7, got %0d (uo_out=%b)", uo_out[3:0], uo_out);
@@ -54,7 +54,7 @@ module tt_um_tiny_4bit_alu_tb;
 
         // 3) ADD_REG: A=2 + reg[3]=7 => 9
         ui_in = {4'd3, 4'd2};
-        uio[3:0] = 4'b1010; // ADD_REG
+        uio_in[3:0] = 4'b1010; // ADD_REG
         #40; #40;
         if (uo_out[3:0] !== 4'd9) begin
             $display("ERROR: ADD_REG expected 9, got %0d (uo_out=%b)", uo_out[3:0], uo_out);
@@ -63,7 +63,7 @@ module tt_um_tiny_4bit_alu_tb;
 
         // 4) SUB_REG: A=2 - reg[3]=7 => -5 => 0b1011 (11)
         ui_in = {4'd3, 4'd2};
-        uio[3:0] = 4'b1011; // SUB_REG
+        uio_in[3:0] = 4'b1011; // SUB_REG
         #40; #40;
         if (uo_out[3:0] !== 4'b1011) begin
             $display("ERROR: SUB_REG expected 4'b1011, got %b (uo_out=%b)", uo_out[3:0], uo_out);
@@ -72,7 +72,7 @@ module tt_um_tiny_4bit_alu_tb;
 
         // 5) Basic ADD: A=3,B=5 -> 3+5=8 => 4'b1000; expect overflow flag = 1 (signed overflow)
         ui_in = {4'd5, 4'd3};
-        uio[3:0] = 4'b0000; // ADD
+        uio_in[3:0] = 4'b0000; // ADD
         #40; #40;
         if (uo_out[3:0] !== 4'b1000) begin
             $display("ERROR: ADD expected 4'b1000, got %b (uo_out=%b)", uo_out[3:0], uo_out);
@@ -83,7 +83,7 @@ module tt_um_tiny_4bit_alu_tb;
 
         // 6) PASS_B: B=9,A=1
         ui_in = {4'd9, 4'd1};
-        uio[3:0] = 4'b0111; // PASS_B
+        uio_in[3:0] = 4'b0111; // PASS_B
         #40; #40;
         if (uo_out[3:0] !== 4'd9) begin
             $display("ERROR: PASS_B expected 9, got %0d (uo_out=%b)", uo_out[3:0], uo_out);

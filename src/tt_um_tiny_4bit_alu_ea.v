@@ -1,6 +1,6 @@
 // tt_um_tiny_4bit_alu_ea.v
 // 4-bit ALU with 8x4-bit register file
-// Ports: clk, rst_n, ui_in[7:0] (B[7:4], A[3:0]), uio[7:0] (opcode in uio[3:0]), uo_out[7:0]
+// Ports: clk, rst_n, ui_in[7:0] (B[7:4], A[3:0]), uio_in[7:0] (opcode in uio_in[3:0]), uo_out[7:0]
 // uo_out: [7]=ZERO, [6]=SIGN, [5]=OVERFLOW, [4]=CARRY, [3:0]=result
 
 module tt_um_tiny_4bit_alu (
@@ -8,14 +8,14 @@ module tt_um_tiny_4bit_alu (
     input  wire        rst_n,    // active low
 	input  wire 	   ena,
     input  wire [7:0]  ui_in,    // {B[7:4], A[3:0]}
-    input  wire [7:0]  uio,      // opcode in uio[3:0]
+    input  wire [7:0]  uio_in,      // opcode in uio_in[3:0]
     output reg  [7:0]  uo_out
 );
 
     // operands
     wire [3:0] A = ui_in[3:0];
     wire [3:0] B = ui_in[7:4];
-    wire [3:0] opcode = uio[3:0];
+    wire [3:0] opcode = uio_in[3:0];
 
     // internal
     reg  [4:0] result_comb;    // combinational 5-bit result (bit4 = carry)
